@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model tbl_users {
+  user_id    Int       @id @default(autoincrement())
+  telephone  String?   @db.VarChar(10)
+  whatsapp   String    @unique(map: "whatsapp") @db.VarChar(10)
+  password   String    @db.VarChar(300)
+  full_name  String    @db.VarChar(100)
+  address    String    @db.VarChar(255)
+  status     Boolean   @default(false)
+  last_login DateTime? @db.DateTime(0)
+}
