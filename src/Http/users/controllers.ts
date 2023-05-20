@@ -59,6 +59,7 @@ export const createUserController = async (req: Request, res: Response) => {
 export const loginController = async (req: Request, res: Response) => {
     const whatsapp = req.body.whatsapp;
     const password = req.body.password;
+    console.log("ok")
 
     const check = await checkUserService(whatsapp)
     if (!check) {
@@ -67,6 +68,8 @@ export const loginController = async (req: Request, res: Response) => {
             message: "ໝາຍເລກ Whatsapp ບໍ່ມີໃນລະບົບແລ້ວ",
         })
     }
+    console.log("ok2")
+
 
     const compare = await bcrypt.compareSync(password, check.password)
 
@@ -87,6 +90,7 @@ export const loginController = async (req: Request, res: Response) => {
 
     const userLatest = await updateUserLoginService(check.user_id, last_login)
     const _user = { ...userLatest, password: null }
+    console.log("ok3")
 
     const token = await sign(_user)
     return res.json({
