@@ -29,6 +29,7 @@ export const createUserController = async (req: Request, res: Response) => {
     const last_login = new Date()
     const status = true
     const user_id = req.body.user_id
+    const role = req.body.role
 
     const check = await checkUserService(whatsapp)
     if (check) {
@@ -39,7 +40,7 @@ export const createUserController = async (req: Request, res: Response) => {
     }
     const hash = await bcrypt.hashSync(password, 10)
 
-    const createUser = await createUserService({ telephone, whatsapp, password: hash, address, full_name, last_login, status, user_id })
+    const createUser = await createUserService({ telephone, whatsapp, password: hash, address, full_name, last_login, status, user_id, role })
 
     if (!createUser) {
         return res.json({

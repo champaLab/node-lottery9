@@ -12,8 +12,38 @@ model tbl_users {
   telephone  String?   @db.VarChar(10)
   whatsapp   String    @unique(map: "whatsapp") @db.VarChar(10)
   password   String    @db.VarChar(300)
+  role       String    @default("Admin") @db.VarChar(50)
   full_name  String    @db.VarChar(100)
   address    String    @db.VarChar(255)
   status     Boolean   @default(false)
   last_login DateTime? @db.DateTime(0)
+}
+
+model tbl_images {
+  image_id        Int    @id @default(autoincrement())
+  product_item_id Int
+  image_path      String @db.VarChar(255)
+}
+
+model tbl_product_types {
+  product_type_id   Int    @id @default(autoincrement())
+  product_type_name String @db.VarChar(100)
+}
+
+model tbl_products {
+  product_id      Int     @id @default(autoincrement())
+  title           String  @db.VarChar(255)
+  product_type_id String  @db.VarChar(50)
+  product_code    String  @db.VarChar(30)
+  image_path      String? @db.VarChar(255)
+}
+
+model tbl_products_items {
+  product_item_id Int      @id @default(autoincrement())
+  prodduct_id     Int
+  color           String   @db.VarChar(100)
+  size            String   @db.VarChar(150)
+  amount          Int
+  price           Float
+  created_at      DateTime @default(now()) @db.DateTime(0)
 }
