@@ -27,6 +27,6 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.get('/', helperCheck)
 app.use(environment.BASE_PATH, apis)
 
-app.listen(environment.NODE_PORT, environment.NODE_HOST, () => {
+const server = app.listen(environment.NODE_PORT, environment.NODE_HOST, () => {
     console.log("server listening on port", environment.NODE_HOST + "::" + environment.NODE_PORT, environment.BASE_PATH)
 })

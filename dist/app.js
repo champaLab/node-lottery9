@@ -25,6 +25,6 @@ app.use((req, res, next) => {
 });
 app.get('/', controllers_1.helperCheck);
 app.use(environment_1.default.BASE_PATH, routes_1.default);
-app.listen(environment_1.default.NODE_PORT, environment_1.default.NODE_HOST, () => {
+const server = app.listen(environment_1.default.NODE_PORT, environment_1.default.NODE_HOST, () => {
     console.log("server listening on port", environment_1.default.NODE_HOST + "::" + environment_1.default.NODE_PORT, environment_1.default.BASE_PATH);
 });
