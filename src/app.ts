@@ -6,6 +6,7 @@ import environment from './utils/environment'
 import apis from './routes'
 import { helperCheck } from './Http/helperCheck/controllers'
 import { join } from 'path'
+import { AddressInfo } from 'net'
 
 const app = express()
 app.use(cors())
@@ -27,6 +28,12 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.get('/', helperCheck)
 app.use(environment.BASE_PATH, apis)
 
-const server = app.listen(environment.NODE_PORT, environment.NODE_HOST, () => {
-    console.log("server listening on port", environment.NODE_HOST + "::" + environment.NODE_PORT, environment.BASE_PATH)
+const listener = app.listen(environment.NODE_PORT, environment.NODE_HOST, () => {
+    if (listener != null) {
+        const server = listener.address() as AddressInfo
+        const endPoint = `${server.address}:${server.port}`
+        console.log(`Running on: ${endPoint}`)
+        console.log(`Path prefix: ${environment.BASE_PATH}`)
+        console.log("server listening on port", environment.NODE_HOST + "::" + environment.NODE_PORT + environment.BASE_PATH)
+    }
 })

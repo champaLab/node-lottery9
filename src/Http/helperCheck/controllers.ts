@@ -1,6 +1,5 @@
 import dayjs from "dayjs"
 import { Request, Response } from "express"
-import { join } from 'path';
 import environment from "../../utils/environment";
 
 export const helperCheck = (req: Request, res: Response) => {

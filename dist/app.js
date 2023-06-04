@@ -25,6 +25,12 @@ app.use((req, res, next) => {
 });
 app.get('/', controllers_1.helperCheck);
 app.use(environment_1.default.BASE_PATH, routes_1.default);
-const server = app.listen(environment_1.default.NODE_PORT, environment_1.default.NODE_HOST, () => {
-    console.log("server listening on port", environment_1.default.NODE_HOST + "::" + environment_1.default.NODE_PORT, environment_1.default.BASE_PATH);
+const listener = app.listen(environment_1.default.NODE_PORT, environment_1.default.NODE_HOST, () => {
+    if (listener != null) {
+        const server = listener.address();
+        const endPoint = `${server.address}:${server.port}`;
+        console.log(`Running on: ${endPoint}`);
+        console.log(`Path prefix: ${environment_1.default.BASE_PATH}`);
+        console.log("server listening on port", environment_1.default.NODE_HOST + "::" + environment_1.default.NODE_PORT + environment_1.default.BASE_PATH);
+    }
 });
