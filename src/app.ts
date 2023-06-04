@@ -28,7 +28,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 app.get('/', helperCheck)
 app.use(environment.BASE_PATH, apis)
 
-const listener = app.listen(environment.NODE_PORT, environment.NODE_HOST, () => {
+const listener = app.listen(environment.NODE_PORT, () => {
     if (listener != null) {
         const server = listener.address() as AddressInfo
         const endPoint = `${server.address}:${server.port}`
