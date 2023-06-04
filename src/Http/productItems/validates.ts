@@ -2,21 +2,26 @@ import { check, validationResult } from "express-validator";
 import { NextFunction, Request, Response } from "express";
 
 export const validate = [
-    check("title")
+    check("product_id")
         .trim()
         .not()
         .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນຫົວຂໍ້ສິນຄ້າ"),
-    check("product_type_id")
+        .withMessage("ກະລຸນາປ້ອນ Product ID"),
+    check("size")
         .trim()
         .not()
         .isEmpty()
-        .withMessage("ກະລຸນາເລືອກປະເພດສິນຄ້າ"),
-    check("product_code")
+        .withMessage("ກະລຸນາປ້ອນຂະໜາດສິນຄ້າ"),
+    check("amount")
         .trim()
         .not()
         .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນ ລະຫັດສິນຄ້າ"),
+        .withMessage("ກະລຸນາປ້ອນຈຳນວນ"),
+    check("price")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາປ້ອນ ລາຄາ"),
 ];
 
 export const validateUpdate = [
@@ -24,27 +29,27 @@ export const validateUpdate = [
         .trim()
         .not()
         .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນ ID"),
-    check("title")
+        .withMessage("ກະລຸນາປ້ອນ Product ID"),
+    check("product_item_id")
         .trim()
         .not()
         .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນຫົວຂໍ້ສິນຄ້າ"),
-    check("product_type_id")
+        .withMessage("ກະລຸນາປ້ອນ Product Item ID"),
+    check("size")
         .trim()
         .not()
         .isEmpty()
-        .withMessage("ກະລຸນາເລືອກປະເພດສິນຄ້າ"),
-    check("product_code")
+        .withMessage("ກະລຸນາປ້ອນຂະໜາດສິນຄ້າ"),
+    check("amount")
         .trim()
         .not()
         .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນ ລະຫັດສິນຄ້າ"),
-    check("image_path_old")
+        .withMessage("ກະລຸນາປ້ອນຈຳນວນ"),
+    check("price")
         .trim()
         .not()
         .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນເລືອກຮູບເກົ່າ"),
+        .withMessage("ກະລຸນາປ້ອນ ລາຄາ"),
 ];
 
 

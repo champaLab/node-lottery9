@@ -2,6 +2,18 @@ import { tbl_users } from "@prisma/client"
 import prismaClient from "../../prisma/prismaClient"
 import { IUser } from "../../types"
 
+export const getUsersService = async () => {
+    try {
+        const users = await prismaClient.tbl_users.findMany()
+        await prismaClient.$disconnect()
+        return users
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+
+
 export const checkUserService = async (whatsapp: string) => {
     try {
         const user = await prismaClient.tbl_users.findFirst(

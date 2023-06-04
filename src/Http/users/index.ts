@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createUserController, getUserController, loginController, updateUserController } from "./controllers";
+import { createUserController, getMeController, getUserController, loginController, updateUserController } from "./controllers";
 import { validate, validateLogin, validateResults, validateUpdate } from "./validates";
 import { verify } from "../../utils/jwt";
 
@@ -11,6 +11,7 @@ router.post('/user/create', verify, validate, validateResults, createUserControl
 router.post('/user/update', verify, validateUpdate, validateResults, updateUserController)
 router.delete('/user/delete/:id', verify, updateUserController)
 router.post('/login', validateLogin, validateResults, loginController)
+router.get('/me', verify, getMeController)
 
 
 export default router

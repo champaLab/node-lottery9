@@ -1,6 +1,4 @@
 import jwt, { SignOptions } from 'jsonwebtoken'
-import path from 'path'
-import fs from 'fs-extra'
 import environment from './environment'
 import { NextFunction, Request, Response } from 'express'
 

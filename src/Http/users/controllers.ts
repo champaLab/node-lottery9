@@ -1,21 +1,17 @@
 import { Request, Response } from "express"
-import { checkUserService, createUserService, deleteUserService, updateUserAndPasswordService, updateUserLoginService, updateUserService } from "./services";
+import { checkUserService, createUserService, deleteUserService, getUsersService, updateUserAndPasswordService, updateUserLoginService, updateUserService } from "./services";
 import bcrypt from 'bcryptjs'
 import { sign } from "../../utils/jwt";
 
 export const getUserController = async (req: Request, res: Response) => {
 
-
-
+    let users = await getUsersService()
+    if (!users) users = []
 
     return res.json({
-        status: "error",
-        message: "ເພີ່ມຂໍ້ມູນສຳເລັດ",
+        status: "success",
+        users
     })
-
-
-
-
 }
 
 
@@ -161,5 +157,13 @@ export const deleteUserController = async (req: Request, res: Response) => {
     return res.json({
         status: "error",
         message: "ບໍ່ພົບຂໍ້ມູນຜູ້ໃຊ້ງານ",
+    })
+}
+
+export const getMeController = async (req: Request, res: Response) => {
+    console.log(req.body.user)
+    return res.json({
+        status: "success",
+        user: req.body.user,
     })
 }

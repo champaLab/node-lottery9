@@ -26,8 +26,9 @@ model tbl_images {
 }
 
 model tbl_product_types {
-  product_type_id   Int    @id @default(autoincrement())
-  product_type_name String @db.VarChar(100)
+  product_type_id   Int      @id @default(autoincrement())
+  product_type_name String   @db.VarChar(100)
+  created_at        DateTime @default(now()) @db.DateTime(0)
 }
 
 model tbl_products {
@@ -40,10 +41,11 @@ model tbl_products {
 
 model tbl_products_items {
   product_item_id Int      @id @default(autoincrement())
-  prodduct_id     Int
-  color           String   @db.VarChar(100)
-  size            String   @db.VarChar(150)
+  product_id      Int
+  color           String?  @db.VarChar(100)
+  size            String?  @db.VarChar(150)
   amount          Int
   price           Float
   created_at      DateTime @default(now()) @db.DateTime(0)
+  image_path      String?  @db.VarChar(300)
 }

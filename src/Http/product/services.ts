@@ -5,11 +5,35 @@ import { stat, statSync, unlinkSync } from "fs-extra"
 import fs from "fs"
 import environment from "../../utils/environment"
 
-export const getAllProductService = async () => {
+export const getAllProductService = async (limit: number, offset: number) => {
     try {
-        const result = await prismaClient.tbl_products.findMany()
+        const products = await prismaClient.$queryRaw`
+        SELECT 
+        PRO.product_id,
+        PRO.product_code,
+        PRO.title,
+        CONCAT(${environment.DOMAIN_IMAGE}, PRO.image_path) AS image_path,
+        PRO.image_path AS image_path_old,
+        PRT.product_type_id,
+        PRT.product_type_name
+        FROM tbl_products PRO
+        LEFT JOIN tbl_product_types PRT ON PRT.product_type_id = PRO.product_type_id
+        LIMIT ${limit} OFFSET ${offset}
+        `
+
+        const count: any[] = await prismaClient.$queryRaw`
+        SELECT 
+        COUNT(product_id) AS count
+        FROM tbl_products
+        `
+
+        let _count = 1
+        if (count.length > 0) {
+            _count = Math.floor((Number(count[0].count) / limit) + 1);
+        }
+
         await prismaClient.$disconnect()
-        return result
+        return { products, count: _count }
     } catch (error) {
         console.log(error)
         return null

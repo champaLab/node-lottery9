@@ -6,9 +6,9 @@ import { upload } from "../../utils/fileUpload";
 
 const router = Router();
 
-router.get('/products', getALLProductsController)
+router.post('/products', verify, getALLProductsController)
 router.post('/products/create', verify, upload('products', true).single('image'), validate, validateResults, createProductController)
 router.post('/products/update', verify, upload('products', true).single('image'), validateUpdate, validateResults, updateProductController)
-router.delete('/products/delete/:id', deleteProductController)
+router.delete('/products/delete/:id', verify, deleteProductController)
 
 export default router

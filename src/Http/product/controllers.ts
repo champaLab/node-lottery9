@@ -7,18 +7,25 @@ import { tbl_products } from "@prisma/client"
 
 
 export const getALLProductsController = async (req: Request, res: Response) => {
-    const products = await getAllProductService()
+    const limit = 20
+    const pageNumber = req.body.pageNumber ? Number(req.body.pageNumber) : 1;
+    const offset = (pageNumber - 1) * limit;
 
-    if (!products) {
+    console.log({ offset })
+    const products = await getAllProductService(limit, offset)
+
+    if (!products?.products) {
         return res.json({
             status: "error",
-            message: "ເພີ່ມຂໍ້ມູນສຳເລັດ",
+            message: "ຜິດພາດລອງອິກຄັ້ງ",
         })
     }
 
     return res.json({
         status: "success",
-        products,
+        products: products.products,
+        count: products.count,
+
     })
 
 }
@@ -42,7 +49,7 @@ export const createProductController = async (req: Request, res: Response) => {
     if (!createUser) {
         return res.json({
             status: "error",
-            message: "ບັນທຶກຂໍ້ມູນບໍ່ສຳເລັດ",
+            message: "ຜິດພາດລອງອີກຄັ້ງ",
         })
     }
 
