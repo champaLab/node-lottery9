@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 app.get('/', controllers_1.helperCheck);
 app.use(environment_1.default.BASE_PATH, routes_1.default);
-const listener = app.listen(environment_1.default.NODE_PORT, environment_1.default.NODE_HOST, () => {
+const listener = app.listen(environment_1.default.NODE_PORT, () => {
     if (listener != null) {
         const server = listener.address();
         const endPoint = `${server.address}:${server.port}`;
