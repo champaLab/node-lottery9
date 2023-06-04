@@ -3,8 +3,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserService = exports.updateUserService = exports.updateUserAndPasswordService = exports.updateUserLoginService = exports.createUserService = exports.checkUserService = void 0;
+exports.deleteUserService = exports.updateUserService = exports.updateUserAndPasswordService = exports.updateUserLoginService = exports.createUserService = exports.checkUserService = exports.getUsersService = void 0;
 const prismaClient_1 = __importDefault(require("../../prisma/prismaClient"));
+const getUsersService = async () => {
+    try {
+        const users = await prismaClient_1.default.tbl_users.findMany();
+        await prismaClient_1.default.$disconnect();
+        return users;
+    }
+    catch (error) {
+        console.log(error);
+        return false;
+    }
+};
+exports.getUsersService = getUsersService;
 const checkUserService = async (whatsapp) => {
     try {
         const user = await prismaClient_1.default.tbl_users.findFirst({

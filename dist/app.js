@@ -10,11 +10,13 @@ const body_parser_1 = __importDefault(require("body-parser"));
 const environment_1 = __importDefault(require("./utils/environment"));
 const routes_1 = __importDefault(require("./routes"));
 const controllers_1 = require("./Http/helperCheck/controllers");
+const path_1 = require("path");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: true }));
 app.use((0, morgan_1.default)('combined'));
+app.use('/uploads', express_1.default.static((0, path_1.join)(__dirname, '..', '/uploads')));
 app.use((req, res, next) => {
     console.log("method", req.method);
     console.log("path", req.path);
@@ -23,6 +25,6 @@ app.use((req, res, next) => {
 });
 app.get('/', controllers_1.helperCheck);
 app.use(environment_1.default.BASE_PATH, routes_1.default);
-app.listen(environment_1.default.NODE_PORT, () => {
-    console.log("server listening on port", environment_1.default.NODE_HOST + "::" + environment_1.default.NODE_PORT + environment_1.default.BASE_PATH);
+app.listen(environment_1.default.NODE_PORT, environment_1.default.NODE_HOST, () => {
+    console.log("server listening on port", environment_1.default.NODE_HOST + "::" + environment_1.default.NODE_PORT, environment_1.default.BASE_PATH);
 });

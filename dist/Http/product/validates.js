@@ -7,7 +7,7 @@ exports.validate = [
         .trim()
         .not()
         .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນຊື່ສິນຄ້າ"),
+        .withMessage("ກະລຸນາປ້ອນຫົວຂໍ້ສິນຄ້າ"),
     (0, express_validator_1.check)("product_type_id")
         .trim()
         .not()
@@ -29,7 +29,7 @@ exports.validateUpdate = [
         .trim()
         .not()
         .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນຊື່ສິນຄ້າ"),
+        .withMessage("ກະລຸນາປ້ອນຫົວຂໍ້ສິນຄ້າ"),
     (0, express_validator_1.check)("product_type_id")
         .trim()
         .not()

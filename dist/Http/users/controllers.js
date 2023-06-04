@@ -3,14 +3,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserController = exports.updateUserController = exports.loginController = exports.createUserController = exports.getUserController = void 0;
+exports.getMeController = exports.deleteUserController = exports.updateUserController = exports.loginController = exports.createUserController = exports.getUserController = void 0;
 const services_1 = require("./services");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jwt_1 = require("../../utils/jwt");
 const getUserController = async (req, res) => {
+    let users = await (0, services_1.getUsersService)();
+    if (!users)
+        users = [];
     return res.json({
-        status: "error",
-        message: "ເພີ່ມຂໍ້ມູນສຳເລັດ",
+        status: "success",
+        users
     });
 };
 exports.getUserController = getUserController;
@@ -138,3 +141,11 @@ const deleteUserController = async (req, res) => {
     });
 };
 exports.deleteUserController = deleteUserController;
+const getMeController = async (req, res) => {
+    console.log(req.body.user);
+    return res.json({
+        status: "success",
+        user: req.body.user,
+    });
+};
+exports.getMeController = getMeController;

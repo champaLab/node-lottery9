@@ -10,4 +10,5 @@ router.post('/user/create', jwt_1.verify, validates_1.validate, validates_1.vali
 router.post('/user/update', jwt_1.verify, validates_1.validateUpdate, validates_1.validateResults, controllers_1.updateUserController);
 router.delete('/user/delete/:id', jwt_1.verify, controllers_1.updateUserController);
 router.post('/login', validates_1.validateLogin, validates_1.validateResults, controllers_1.loginController);
+router.get('/me', jwt_1.verify, controllers_1.getMeController);
 exports.default = router;
