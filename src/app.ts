@@ -4,7 +4,7 @@ import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import environment from './utils/environment'
 import apis from './routes'
-import { helperCheck } from './Http/helperCheck/controllers'
+import { helperCheck } from './APIs/helperCheck/controllers'
 import { join } from 'path'
 import { AddressInfo } from 'net'
 

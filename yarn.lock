@@ -733,9 +733,9 @@ diff@^4.0.1:
   integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
 dotenv@^16.0.3:
-  version "16.1.3"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.1.3.tgz#0c67e90d0ddb48d08c570888f709b41844928210"
-  integrity sha512-FYssxsmCTtKL72fGBSvb1K9dRz0/VZeWqFme/vSb7r7323x4CRaHu4LvQ5JG3+s6yt2YPbBrkpiEODktfyjI9A==
+  version "16.1.4"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.1.4.tgz#67ac1a10cd9c25f5ba604e4e08bc77c0ebe0ca8c"
+  integrity sha512-m55RtE8AsPeJBpOIFKihEmqUcoVncQIwo7x9U8ZwLEZw9ZpXboz2c+rvog+jUaJvVrZ5kBOeYQBX5+8Aa/OZQw==
 
 ecdsa-sig-formatter@1.0.11:
   version "1.0.11"
@@ -2013,9 +2013,9 @@ supports-preserve-symlinks-flag@^1.0.0:
   integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
 
 systeminformation@^5.7:
-  version "5.17.16"
-  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-5.17.16.tgz#e7c0201983a581ede6049a6fbc233e10f05d5a05"
-  integrity sha512-dl2QLa7yp9QbBl9um+51CAr3p/40tbz+f34X1lUXkk1SnDcNeJR2iWu/8HD7GM2yRukmy3RCRXFYcPZs0lCs0Q==
+  version "5.18.3"
+  resolved "https://registry.yarnpkg.com/systeminformation/-/systeminformation-5.18.3.tgz#3fcb72d28806797f8b4750ed101138ec90944691"
+  integrity sha512-k+gk7zSi0hI/m3Mgu1OzR8j9BfXMDYa2HUMBdEQZUVCVAO326kDrzrvtVMljiSoDs6T6ojI0AHneDn8AMa0Y6A==
 
 tdigest@^0.1.1:
   version "0.1.2"

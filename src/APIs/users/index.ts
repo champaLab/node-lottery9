@@ -7,9 +7,9 @@ const router = Router();
 
 
 router.get('/users', getUserController)
-router.post('/user/create', verify, validate, validateResults, createUserController)
-router.post('/user/update', verify, validateUpdate, validateResults, updateUserController)
-router.delete('/user/delete/:id', verify, updateUserController)
+router.post('/users/create', verify, validate, validateResults, createUserController)
+router.post('/users/update', verify, validateUpdate, validateResults, updateUserController)
+router.delete('/users/delete/:id', verify, updateUserController)
 router.post('/login', validateLogin, validateResults, loginController)
 router.get('/me', verify, getMeController)
 

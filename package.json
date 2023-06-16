@@ -7,7 +7,7 @@
     "dev": "cross-env nodemon --delay 100ms src/app.ts",
     "build": "rm -rf dist && tsc",
     "start": "pm2 start -i 3 ./dist/app.js",
-    "db": "yarn db:pull && yarn db:generate",
+    "db": "yarn prisma db pull && yarn db:generate",
     "db:pull": "rm -rf node_modules package-lock.json yarn.lock && yarn && yarn prisma db pull",
     "db:generate": "yarn prisma generate",
     "db:migrate": "yarn prisma migrate"

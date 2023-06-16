@@ -13,16 +13,13 @@ export const getUsersService = async () => {
     }
 }
 
-
-export const checkUserService = async (whatsapp: string) => {
+export const checkUserService = async (username: string) => {
     try {
         const user = await prismaClient.tbl_users.findFirst(
-            {
-                where: { whatsapp }
-            }
+            { where: { username } }
         )
 
-        prismaClient.$disconnect()
+        await prismaClient.$disconnect()
         return user
     } catch (error) {
         console.log(error)
@@ -30,21 +27,30 @@ export const checkUserService = async (whatsapp: string) => {
     }
 }
 
-
-export const createUserService = async (user: tbl_users) => {
+export const createUserService = async (username: string, password: string, created_by: number, percentage: number, role: string) => {
     try {
-        const _user = await prismaClient.tbl_users.create({ data: user })
-        prismaClient.$disconnect()
+        const _user = await prismaClient.tbl_users.create({
+            data: {
+                username,
+                password,
+                created_by,
+                percentage,
+                role,
+            }
+        })
+
+        await prismaClient.$disconnect()
         return _user
     } catch (error) {
         console.log(error)
         return false
     }
 }
+
 export const updateUserLoginService = async (user_id: number, last_login: Date) => {
     try {
         const _user = await prismaClient.tbl_users.update({ where: { user_id }, data: { last_login } })
-        prismaClient.$disconnect()
+        await prismaClient.$disconnect()
         return _user
     } catch (error) {
         console.log(error)
@@ -55,23 +61,25 @@ export const updateUserLoginService = async (user_id: number, last_login: Date) 
 export const updateUserAndPasswordService = async (user: tbl_users) => {
     try {
         const _user = await prismaClient.tbl_users.update({ where: { user_id: user.user_id }, data: user })
-        prismaClient.$disconnect()
+        await prismaClient.$disconnect()
         return _user
     } catch (error) {
         console.log(error)
         return false
     }
 }
+
 export const updateUserService = async (user: IUser) => {
     try {
         const _user = await prismaClient.tbl_users.update({ where: { user_id: user.user_id }, data: user })
-        prismaClient.$disconnect()
+        await prismaClient.$disconnect()
         return _user
     } catch (error) {
         console.log(error)
         return false
     }
 }
+
 export const deleteUserService = async (user_id: number) => {
     try {
         const _user = await prismaClient.tbl_users.delete({ where: { user_id } })

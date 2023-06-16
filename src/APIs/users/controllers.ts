@@ -17,26 +17,22 @@ export const getUserController = async (req: Request, res: Response) => {
 
 export const createUserController = async (req: Request, res: Response) => {
 
-    const telephone = req.body.telephone;
-    const whatsapp = req.body.whatsapp;
+    const username = req.body.username;
     const password = req.body.password;
-    const address = req.body.address;
-    const full_name = req.body.full_name;
-    const last_login = new Date()
-    const status = true
-    const user_id = req.body.user_id
+    const created_by = req.body.user.user_id
     const role = req.body.role
+    const percentage = req.body.percentage
 
-    const check = await checkUserService(whatsapp)
+    const check = await checkUserService(username)
     if (check) {
         return res.json({
             status: "error",
-            message: "ໝາຍເລກ Whatsapp ມີໃນລະບົບແລ້ວ",
+            message: "ຜູ້ໃຊ້ງານນີ້ ມີໃນລະບົບແລ້ວ",
         })
     }
     const hash = await bcrypt.hashSync(password, 10)
 
-    const createUser = await createUserService({ telephone, whatsapp, password: hash, address, full_name, last_login, status, user_id, role })
+    const createUser = await createUserService(username, hash, created_by, percentage, role)
 
     if (!createUser) {
         return res.json({
@@ -45,8 +41,6 @@ export const createUserController = async (req: Request, res: Response) => {
         })
     }
 
-    const user = { ...createUser, password: null }
-
     return res.json({
         status: "success",
         message: "ບັນທຶກຂໍ້ມູນສຳເລັດ",
@@ -54,40 +48,35 @@ export const createUserController = async (req: Request, res: Response) => {
 }
 
 export const loginController = async (req: Request, res: Response) => {
-    const whatsapp = req.body.whatsapp;
+    const username = req.body.username;
     const password = req.body.password;
-    console.log("ok")
 
-    const check = await checkUserService(whatsapp)
+    const check = await checkUserService(username)
     if (!check) {
         return res.json({
             status: "error",
-            message: "ໝາຍເລກ Whatsapp ບໍ່ມີໃນລະບົບແລ້ວ",
+            message: "ຊື່ຜູ້ໃຊ້ນີ້ ບໍ່ມີໃນລະບົບ",
         })
     }
-    console.log("ok2")
-
 
     const compare = await bcrypt.compareSync(password, check.password)
-
     if (!compare) {
         return res.json({
             status: "error",
-            message: "ໝາຍເລກ Whatsapp ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ",
+            message: "ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ",
         })
     }
 
     if (compare && !check.status) {
         return res.json({
             status: "error",
-            message: "ບັນຊີນີ້ຖືກປິດໃຊ້ງານແລ້ວ",
+            message: "ບັນຊີນີ້ຖືກປິດໃຊ້ງານຊົ່ວຄາວ",
         })
     }
     const last_login = new Date()
 
     const userLatest = await updateUserLoginService(check.user_id, last_login)
     const _user = { ...userLatest, password: null }
-    console.log("ok3")
 
     const token = await sign(_user)
     return res.json({
