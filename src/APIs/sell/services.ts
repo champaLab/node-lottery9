@@ -84,3 +84,18 @@ export const getLotteryService = async (number: string) => {
         return null
     }
 }
+
+
+export const checkoutService = async (bill_id: number) => {
+    try {
+        const result = await prismaClient.$queryRaw`
+        UPDATE tbl_invoices SET checkout = 'yes' WHERE bill_id = ${bill_id}
+        `
+
+        await prismaClient.$disconnect()
+        return result
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}

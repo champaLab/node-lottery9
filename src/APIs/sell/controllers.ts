@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getAwardService, createService, getBillService, getInvoiceByBillService, getLotteryService, createManyService } from "./services";
+import { getAwardService, createService, getBillService, getInvoiceByBillService, getLotteryService, createManyService, checkoutService } from "./services";
 
 export const getAwardController = async (req: Request, res: Response) => {
 
@@ -103,5 +103,20 @@ export const getInvoiceByBillController = async (req: Request, res: Response) =>
     return res.json({
         status: "success",
         invoice: invoice ? invoice : [],
+    })
+}
+
+export const checkoutController = async (req: Request, res: Response) => {
+
+    const bill = Number(req.body.bill_id)
+    const invoice = await checkoutService(bill)
+    if (!invoice) {
+        return res.json({
+            status: "error",
+            message: "ກະລຸນາລະບຸເລກທີບິນ",
+        })
+    }
+    return res.json({
+        status: "success",
     })
 }

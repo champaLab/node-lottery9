@@ -58,3 +58,13 @@ model tbl_invoices {
   reason      String?   @db.VarChar(225)
   checkout    String    @default("no") @db.VarChar(10)
 }
+
+model tbl_lottery_history {
+  lottery_history_id Int       @id @unique(map: "lottery_history_id_UNIQUE") @default(autoincrement())
+  number             String    @db.VarChar(6)
+  created_at         DateTime? @default(now()) @db.DateTime(0)
+  updated_by         Int?
+  date               String    @unique(map: "date_UNIQUE") @db.VarChar(20)
+  created_by         Int
+  updated_at         DateTime? @db.DateTime(0)
+}

@@ -20,35 +20,12 @@ export const validate = [
         .withMessage("ກະລຸນາປ້ອນເລກທີບິນ"),
 ];
 
-export const validateLogin = [
-    check("username")
+export const validateCheckout = [
+    check("bill_id")
         .trim()
         .not()
         .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນຊື່ຜູ້ໃຊ້ງານ"),
-    check("password")
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນ ລະຫັດຜ່ານ"),
-];
-
-export const validateUpdate = [
-    check("user_id")
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນ USER ID"),
-    check("username")
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນຊື່ຜູ້ໃຊ້ງານ"),
-    check("role")
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage("ກະລຸນາເລືອກສິດການໃຊ້ງານ"),
+        .withMessage("ກະລຸນາປ້ອນ ເລກທີບິນ"),
 ];
 
 export async function validateResults(
