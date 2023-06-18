@@ -6,3 +6,4 @@ export interface IUser {
     address: string
     status: boolean
 }
+

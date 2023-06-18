@@ -21,7 +21,7 @@ model tbl_users {
 }
 
 model tbl_bills {
-  bill_id    Int      @id @default(autoincrement())
+  bill_id    Int      @id @unique(map: "bill_id_UNIQUE") @default(autoincrement())
   created_at DateTime @default(now()) @db.DateTime(0)
   user_id    Int
 }
@@ -37,7 +37,7 @@ model tbl_lottery {
 }
 
 model tbl_award {
-  award_id Int   @id @unique(map: "award_id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  award_id Int   @id @unique(map: "award_id_UNIQUE") @default(autoincrement())
   lao2     Float
   lao3     Float
   thai2    Float
@@ -46,13 +46,14 @@ model tbl_award {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model tbl_invoices {
-  invoice_id  Int       @id @unique(map: "invoice_id_UNIQUE") @default(autoincrement()) @db.UnsignedInt
+  invoice_id  Int       @id @unique(map: "invoice_id_UNIQUE") @default(autoincrement())
   number      String    @db.VarChar(5)
   price       Float
-  cancel      Int?      @default(0) @db.TinyInt
+  cancel      String?   @db.VarChar(10)
   type        String    @default("lao") @db.VarChar(10)
   bill_id     Int
-  created_at  DateTime? @default(now()) @db.DateTime(0)
+  created_by  Int
+  created_at  DateTime  @db.DateTime(0)
   cancel_date DateTime? @db.DateTime(0)
   cancel_by   Int?
   reason      String?   @db.VarChar(225)

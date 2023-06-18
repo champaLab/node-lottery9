@@ -15,36 +15,6 @@ export const validate = [
         .isNumeric()
         .withMessage("ກະລຸນາປ້ອນ ຈຳນວນເງິນລາງວັນ ເລກລາວ 2 ໂຕ"),
 ];
-export const validateLogin = [
-    check("username")
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນຊື່ຜູ້ໃຊ້ງານ"),
-    check("password")
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນ ລະຫັດຜ່ານ"),
-];
-
-export const validateUpdate = [
-    check("user_id")
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນ USER ID"),
-    check("username")
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນຊື່ຜູ້ໃຊ້ງານ"),
-    check("role")
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage("ກະລຸນາເລືອກສິດການໃຊ້ງານ"),
-];
 
 export async function validateResults(
     req: Request,

@@ -1,4 +1,4 @@
-import { tbl_award, tbl_lottery } from "@prisma/client"
+import { tbl_award, } from "@prisma/client"
 import prismaClient from "../../prisma/prismaClient"
 
 export const getAwardService = async () => {
@@ -30,47 +30,3 @@ export const createAwardService = async (award: tbl_award) => {
         return null
     }
 }
-
-// export const updateUserLoginService = async (user_id: number, last_login: Date) => {
-//     try {
-//         const _user = await prismaClient.tbl_users.update({ where: { user_id }, data: { last_login } })
-//         await prismaClient.$disconnect()
-//         return _user
-//     } catch (error) {
-//         console.log(error)
-//         return false
-//     }
-// }
-
-// export const updateUserAndPasswordService = async (user: tbl_users) => {
-//     try {
-//         const _user = await prismaClient.tbl_users.update({ where: { user_id: user.user_id }, data: user })
-//         await prismaClient.$disconnect()
-//         return _user
-//     } catch (error) {
-//         console.log(error)
-//         return false
-//     }
-// }
-
-// export const updateUserService = async (user: IUser) => {
-//     try {
-//         const _user = await prismaClient.tbl_users.update({ where: { user_id: user.user_id }, data: user })
-//         await prismaClient.$disconnect()
-//         return _user
-//     } catch (error) {
-//         console.log(error)
-//         return false
-//     }
-// }
-
-// export const deleteUserService = async (user_id: number) => {
-//     try {
-//         const _user = await prismaClient.tbl_users.delete({ where: { user_id } })
-//         prismaClient.$disconnect()
-//         return _user
-//     } catch (error) {
-//         console.log(error)
-//         return false
-//     }
-// }

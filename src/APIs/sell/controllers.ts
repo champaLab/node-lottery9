@@ -36,21 +36,28 @@ export const getBillController = async (req: Request, res: Response) => {
 }
 
 export const createInvoiceController = async (req: Request, res: Response) => {
-    const number = req.body.number.slice(1)
+    let number = req.body.number
+    if (number.length === 3) {
+        number = number.slice(1)
+    }
+
     const luk = req.body.number.charAt(0)
     const price = Number(req.body.price)
     const bill_id = Number(req.body.bill_id)
     const type = req.body.type
     const group = req.body.group
+    const user_id = req.body.user.user_id
 
     if (group) {
         const groups = await getLotteryService(number)
         if (groups) {
             const lottery = groups.group.split(',').map(num => ({
-                "number": luk + num,
+                number: luk + num,
                 price,
                 type,
                 bill_id,
+                created_at: new Date(),
+                created_by: user_id,
             }))
             const create = await createManyService(lottery)
             if (!create) {
@@ -60,7 +67,7 @@ export const createInvoiceController = async (req: Request, res: Response) => {
                 })
             }
         } else {
-            const create = await createService(req.body)
+            const create = await createService(number, price, bill_id, type, user_id)
             if (!create) {
                 return res.json({
                     status: "error",
@@ -73,7 +80,7 @@ export const createInvoiceController = async (req: Request, res: Response) => {
             message: "ບັນທຶກຂໍ້ມູນສຳເລັດ",
         })
     } else {
-        const create = await createService(req.body)
+        const create = await createService(number, price, bill_id, type, user_id)
         if (!create) {
             return res.json({
                 status: "error",

@@ -23,16 +23,25 @@ export const getBillService = async (user_id: number) => {
     }
 }
 
-export const createService = async (lottery: tbl_invoices) => {
+export const createService = async (number: string, price: number, bill_id: number, type: string, user_id: number) => {
     try {
+        const created_at = new Date()
         const result = await prismaClient.tbl_invoices.create({
             data: {
-                number: lottery.number,
-                price: Number(lottery.price),
-                type: lottery.type,
-                bill_id: Number(lottery.bill_id),
+                number: number,
+                price: Number(price),
+                type: type,
+                bill_id: Number(bill_id),
+                created_at: new Date(),
+                created_by: Number(user_id),
             }
         })
+
+        // const result = await prismaClient.$queryRaw`
+        //         INSERT INTO tbl_invoices (number, price, bill_id, created_at, type, created_by)
+        //         VALUES (${number}, ${price}, ${bill_id},  ${new Date()}, ${type}, ${user_id});
+        //         `
+
 
         await prismaClient.$disconnect()
         return result

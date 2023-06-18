@@ -2,13 +2,15 @@ import { check, validationResult } from "express-validator";
 import { NextFunction, Request, Response } from "express";
 
 export const validate = [
-    check("number")
-        .isNumeric()
-        .withMessage("ກະລຸນາປ້ອນ ຜົນຫວຍ")
-        .isLength({ max: 3, min: 3 })
-        .withMessage("3 ໂຕເທົ່ານັ້ນ"),
+    check("date")
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາເລືອກວັນທີ"),
+    check("type")
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາເລືອກປະເພດຫວຍ"),
 ];
-
 
 
 export async function validateResults(
