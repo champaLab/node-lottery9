@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const controllers_1 = require("./controllers");
+const validates_1 = require("./validates");
+const jwt_1 = require("../../utils/jwt");
+const router = (0, express_1.Router)();
+router.get('/award', jwt_1.verify, controllers_1.getAwardController);
+router.post('/award/create', jwt_1.verify, validates_1.validate, validates_1.validateResults, controllers_1.createAwardController);
+exports.default = router;
