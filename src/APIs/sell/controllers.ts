@@ -106,6 +106,7 @@ export const getInvoiceByBillController = async (req: Request, res: Response) =>
 
     const bill = Number(req.params.bill)
     const invoice = await getInvoiceByBillService(bill)
+    console.log(invoice)
 
     return res.json({
         status: "success",
