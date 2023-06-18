@@ -9,7 +9,7 @@ const morgan_1 = __importDefault(require("morgan"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const environment_1 = __importDefault(require("./utils/environment"));
 const routes_1 = __importDefault(require("./routes"));
-const controllers_1 = require("./Http/helperCheck/controllers");
+const controllers_1 = require("./APIs/helperCheck/controllers");
 const path_1 = require("path");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 app.get('/', controllers_1.helperCheck);
 app.use(environment_1.default.BASE_PATH, routes_1.default);
-const listener = app.listen(environment_1.default.NODE_PORT, () => {
+const listener = app.listen(environment_1.default.NODE_PORT, '0.0.0.0', () => {
     if (listener != null) {
         const server = listener.address();
         const endPoint = `${server.address}:${server.port}`;
