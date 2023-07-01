@@ -2,11 +2,20 @@ import { tbl_users } from "@prisma/client"
 import prismaClient from "../../prisma/prismaClient"
 import { IUser } from "../../types"
 
-export const getUsersService = async () => {
+export const getUsersService = async (created_by: number, role: string) => {
     try {
-        const users = await prismaClient.tbl_users.findMany()
-        await prismaClient.$disconnect()
-        return users
+        if (role === "admin") {
+            const users = await prismaClient.tbl_users.findMany()
+            await prismaClient.$disconnect()
+            return users
+        } else if (role === "agent") {
+            const users = await prismaClient.tbl_users.findMany({
+                where: { created_by }
+            })
+            await prismaClient.$disconnect()
+            return users
+        }
+        return []
     } catch (error) {
         console.log(error)
         return false

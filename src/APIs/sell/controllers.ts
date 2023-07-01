@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { getAwardService, createService, getBillService, getInvoiceByBillService, getLotteryService, createManyService, checkoutService } from "./services";
+import { getAwardService, createService, getBillService, getInvoiceByBillService, getLotteryService, createManyService, checkoutService, cancelBillService } from "./services";
 
 export const getAwardController = async (req: Request, res: Response) => {
 
@@ -47,6 +47,7 @@ export const createInvoiceController = async (req: Request, res: Response) => {
     const type = req.body.type
     const group = req.body.group
     const user_id = req.body.user.user_id
+    const agent = req.body.user.created_by ? Number(req.body.user.created_by) : null
 
     if (group) {
         const groups = await getLotteryService(number)
@@ -58,6 +59,7 @@ export const createInvoiceController = async (req: Request, res: Response) => {
                 bill_id,
                 created_at: new Date(),
                 created_by: user_id,
+                agent,
             }))
             const create = await createManyService(lottery)
             if (!create) {
@@ -67,7 +69,7 @@ export const createInvoiceController = async (req: Request, res: Response) => {
                 })
             }
         } else {
-            const create = await createService(number, price, bill_id, type, user_id)
+            const create = await createService(number, price, bill_id, type, user_id, agent)
             if (!create) {
                 return res.json({
                     status: "error",
@@ -80,7 +82,7 @@ export const createInvoiceController = async (req: Request, res: Response) => {
             message: "ບັນທຶກຂໍ້ມູນສຳເລັດ",
         })
     } else {
-        const create = await createService(number, price, bill_id, type, user_id)
+        const create = await createService(number, price, bill_id, type, user_id, agent)
         if (!create) {
             return res.json({
                 status: "error",
@@ -126,5 +128,24 @@ export const checkoutController = async (req: Request, res: Response) => {
     }
     return res.json({
         status: "success",
+    })
+}
+
+export const cancelBillController = async (req: Request, res: Response) => {
+
+    const bill_id = Number(req.body.bill_id);
+    const cancel_by = Number(req.body.user.user_id)
+    const cancel_date = new Date()
+
+    const cancel = await cancelBillService(bill_id, cancel_by, cancel_date)
+    if (!cancel) {
+        return res.json({
+            status: "error",
+            message: "ບໍ່ສາມາດຍົກເລີກໃບບິນ",
+        })
+    }
+    return res.json({
+        status: "success",
+        message: "ຍົກເລີກໃບບິນ ສຳເລັດ",
     })
 }

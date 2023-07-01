@@ -28,6 +28,14 @@ export const validateCheckout = [
         .withMessage("ກະລຸນາປ້ອນ ເລກທີບິນ"),
 ];
 
+export const validateCancel = [
+    check("bill_id")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາປ້ອນ ເລກທີບິນ"),
+];
+
 export async function validateResults(
     req: Request,
     res: Response,

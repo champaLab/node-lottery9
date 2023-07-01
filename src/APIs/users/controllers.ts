@@ -5,7 +5,10 @@ import { sign } from "../../utils/jwt";
 
 export const getUserController = async (req: Request, res: Response) => {
 
-    let users = await getUsersService()
+    const role = req.body.user.role
+    const created_by = Number(req.body.user.created_by)
+
+    let users = await getUsersService(created_by, role)
     if (!users) users = []
 
     return res.json({

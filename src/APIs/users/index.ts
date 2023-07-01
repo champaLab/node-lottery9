@@ -6,7 +6,7 @@ import { verify } from "../../utils/jwt";
 const router = Router();
 
 
-router.get('/users', getUserController)
+router.get('/users', verify, getUserController)
 router.post('/users/create', verify, validate, validateResults, createUserController)
 router.post('/users/update', verify, validateUpdate, validateResults, updateUserController)
 router.delete('/users/delete/:id', verify, updateUserController)

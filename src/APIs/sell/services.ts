@@ -23,7 +23,7 @@ export const getBillService = async (user_id: number) => {
     }
 }
 
-export const createService = async (number: string, price: number, bill_id: number, type: string, user_id: number) => {
+export const createService = async (number: string, price: number, bill_id: number, type: string, user_id: number, agent: number | null) => {
     try {
         const created_at = new Date()
         const result = await prismaClient.tbl_invoices.create({
@@ -34,14 +34,9 @@ export const createService = async (number: string, price: number, bill_id: numb
                 bill_id: Number(bill_id),
                 created_at: new Date(),
                 created_by: Number(user_id),
+                agent,
             }
         })
-
-        // const result = await prismaClient.$queryRaw`
-        //         INSERT INTO tbl_invoices (number, price, bill_id, created_at, type, created_by)
-        //         VALUES (${number}, ${price}, ${bill_id},  ${new Date()}, ${type}, ${user_id});
-        //         `
-
 
         await prismaClient.$disconnect()
         return result
@@ -99,6 +94,20 @@ export const checkoutService = async (bill_id: number) => {
     try {
         const result = await prismaClient.$queryRaw`
         UPDATE tbl_invoices SET checkout = 'yes' WHERE bill_id = ${bill_id}
+        `
+
+        await prismaClient.$disconnect()
+        return result
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
+
+export const cancelBillService = async (bill_id: number, cancel_by: number, cancel_date: Date) => {
+    try {
+        const result = await prismaClient.$queryRaw`
+        UPDATE tbl_invoices SET cancel = 'yes', cancel_by = ${cancel_by}, cancel_date=${cancel_date}  WHERE bill_id = ${bill_id}
         `
 
         await prismaClient.$disconnect()
