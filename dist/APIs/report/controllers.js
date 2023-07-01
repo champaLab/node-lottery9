@@ -55,7 +55,8 @@ const getSummaryByAgentController = async (req, res) => {
     const date = req.body.date;
     const type = req.body.type;
     const user_id = Number(req.body.user.user_id);
-    const report = await (0, services_1.getSummaryByAgentService)(date, type, user_id);
+    const role = `${req.body.user.role}`.toLocaleLowerCase();
+    const report = await (0, services_1.getSummaryByAgentService)(date, type, user_id, role);
     if (!report) {
         return res.json({
             status: "error",
@@ -111,7 +112,7 @@ const summaryAwardByAgentController = async (req, res) => {
         else if (type === 'thai' && item.number.length === 3) {
             multiplier = award.thai3;
         }
-        const multipliedItem = { ...item, price: item.price * multiplier, award: multiplier };
+        const multipliedItem = { ...item, price: Number(item.count) * multiplier, award: multiplier };
         _report.push(multipliedItem);
     }
     return res.json({

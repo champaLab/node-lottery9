@@ -41,8 +41,8 @@ const createInvoiceController = async (req, res) => {
     const bill_id = Number(req.body.bill_id);
     const type = req.body.type;
     const group = req.body.group;
-    const user_id = req.body.user.user_id;
-    const agent = req.body.user.created_by ? Number(req.body.user.created_by) : null;
+    const user_id = Number(req.body.user.user_id);
+    const agent = req.body.user.created_by ? Number(req.body.user.created_by) : user_id;
     if (group) {
         const groups = await (0, services_1.getLotteryService)(number);
         if (groups) {

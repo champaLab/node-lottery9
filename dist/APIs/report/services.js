@@ -114,9 +114,11 @@ const getLotterySearchService = async (bill_id, type) => {
     }
 };
 exports.getLotterySearchService = getLotterySearchService;
-const getSummaryByAgentService = async (created_at, type, agent) => {
+const getSummaryByAgentService = async (created_at, type, user_id, role) => {
     try {
-        let result = await prismaClient_1.default.$queryRaw `
+        let result = null;
+        if (role === 'admin' || role == 'superadmin') {
+            result = await prismaClient_1.default.$queryRaw `
             SELECT   US.username, US.percentage,
             (SUM(IV.price) * US.percentage/100) as percent,
             SUM(IV.price) as price
@@ -125,11 +127,43 @@ const getSummaryByAgentService = async (created_at, type, agent) => {
             ON US.user_id = IV.agent
             WHERE DATE(IV.created_at) = ${created_at}
             AND IV.checkout = 'yes'
-            AND IV.agent = ${agent}
             AND IV.type = ${type}
             AND IV.cancel IS NULL
             GROUP BY IV.created_by
             `;
+        }
+        else if (role === 'agent') {
+            result = await prismaClient_1.default.$queryRaw `
+           SELECT   US.username, US.percentage,
+            (SUM(IV.price) * US.percentage/100) as percent,
+            SUM(IV.price) as price
+            FROM tbl_invoices IV
+            LEFT JOIN tbl_users AS US
+            ON US.user_id = IV.agent
+            WHERE DATE(IV.created_at) = ${created_at}
+            AND IV.checkout = 'yes'
+            AND IV.agent = ${user_id}
+            AND IV.type = ${type}
+            AND IV.cancel IS NULL
+            GROUP BY IV.created_by
+            `;
+        }
+        else {
+            result = await prismaClient_1.default.$queryRaw `
+           SELECT   US.username, US.percentage,
+            (SUM(IV.price) * US.percentage/100) as percent,
+            SUM(IV.price) as price
+            FROM tbl_invoices IV
+            LEFT JOIN tbl_users AS US
+            ON US.user_id = IV.agent
+            WHERE DATE(IV.created_at) = ${created_at}
+            AND IV.checkout = 'yes'
+            AND IV.created_by = ${user_id}
+            AND IV.type = ${type}
+            AND IV.cancel IS NULL
+            GROUP BY IV.created_by
+            `;
+        }
         await prismaClient_1.default.$disconnect();
         return result;
     }
@@ -145,8 +179,7 @@ const summaryAwardAgentService = async (type, two, three, role, created_by) => {
         if (role === 'admin' || role == 'superadmin') {
             result = await prismaClient_1.default.$queryRaw `
             SELECT  US.username, IV.number,
-            COUNT(IV.number) as count,
-            SUM(IV.price) as price
+            COUNT(IV.number) as count 
             FROM tbl_invoices IV
             LEFT JOIN tbl_users AS US
             ON US.user_id = IV.agent
@@ -159,8 +192,7 @@ const summaryAwardAgentService = async (type, two, three, role, created_by) => {
         }
         else if (role === 'agent') {
             result = await prismaClient_1.default.$queryRaw `
-            SELECT  US.username, IV.number,
-            COUNT(IV.number) as count,
+            SELECT  US.username, IV.number 
             SUM(IV.price) as price
             FROM tbl_invoices IV
             LEFT JOIN tbl_users AS US
@@ -176,8 +208,7 @@ const summaryAwardAgentService = async (type, two, three, role, created_by) => {
         else {
             result = await prismaClient_1.default.$queryRaw `
             SELECT  US.username, IV.number,
-            COUNT(IV.number) as count,
-            SUM(IV.price) as price
+            COUNT(IV.number) as count 
             FROM tbl_invoices IV
             LEFT JOIN tbl_users AS US
             ON US.user_id = IV.agent
