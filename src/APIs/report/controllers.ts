@@ -102,6 +102,7 @@ export const summaryAwardByAgentController = async (req: Request, res: Response)
         username: string;
         number: string;
         price: number;
+        count: number;
     }
 
 
@@ -131,7 +132,7 @@ export const summaryAwardByAgentController = async (req: Request, res: Response)
             multiplier = award.thai3;
         }
 
-        const multipliedItem = { ...item, price: item.price * multiplier, award: multiplier };
+        const multipliedItem = { ...item, price: Number(item.count) * multiplier, award: multiplier };
         _report.push(multipliedItem);
     }
 

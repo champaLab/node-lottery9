@@ -139,8 +139,7 @@ export const summaryAwardAgentService = async (type: string, two: string, three:
         if (role === 'admin' || role == 'superadmin') {
             result = await prismaClient.$queryRaw`
             SELECT  US.username, IV.number,
-            COUNT(IV.number) as count,
-            SUM(IV.price) as price
+            COUNT(IV.number) as count 
             FROM tbl_invoices IV
             LEFT JOIN tbl_users AS US
             ON US.user_id = IV.agent
@@ -152,8 +151,7 @@ export const summaryAwardAgentService = async (type: string, two: string, three:
             `
         } else if (role === 'agent') {
             result = await prismaClient.$queryRaw`
-            SELECT  US.username, IV.number,
-            COUNT(IV.number) as count,
+            SELECT  US.username, IV.number 
             SUM(IV.price) as price
             FROM tbl_invoices IV
             LEFT JOIN tbl_users AS US
@@ -168,8 +166,7 @@ export const summaryAwardAgentService = async (type: string, two: string, three:
         } else {
             result = await prismaClient.$queryRaw`
             SELECT  US.username, IV.number,
-            COUNT(IV.number) as count,
-            SUM(IV.price) as price
+            COUNT(IV.number) as count 
             FROM tbl_invoices IV
             LEFT JOIN tbl_users AS US
             ON US.user_id = IV.agent
