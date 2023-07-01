@@ -60,8 +60,9 @@ export const getSummaryByAgentController = async (req: Request, res: Response) =
     const date = req.body.date
     const type = req.body.type
     const user_id = Number(req.body.user.user_id)
+    const role = `${req.body.user.role}`.toLocaleLowerCase()
 
-    const report = await getSummaryByAgentService(date, type, user_id)
+    const report = await getSummaryByAgentService(date, type, user_id, role)
     if (!report) {
         return res.json({
             status: "error",
@@ -74,6 +75,7 @@ export const getSummaryByAgentController = async (req: Request, res: Response) =
         report,
     })
 }
+
 export const summaryAwardByAgentController = async (req: Request, res: Response) => {
 
     const date = dayjs(req.body.date).format('YYYYMMDD')

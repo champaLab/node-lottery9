@@ -108,9 +108,11 @@ export const getLotterySearchService = async (bill_id: number, type: string) => 
     }
 }
 
-export const getSummaryByAgentService = async (created_at: string, type: string, agent: number) => {
+export const getSummaryByAgentService = async (created_at: string, type: string, user_id: number, role: string) => {
     try {
-        let result = await prismaClient.$queryRaw`
+        let result: any = null
+        if (role === 'admin' || role == 'superadmin') {
+            result = await prismaClient.$queryRaw`
             SELECT   US.username, US.percentage,
             (SUM(IV.price) * US.percentage/100) as percent,
             SUM(IV.price) as price
@@ -119,11 +121,42 @@ export const getSummaryByAgentService = async (created_at: string, type: string,
             ON US.user_id = IV.agent
             WHERE DATE(IV.created_at) = ${created_at}
             AND IV.checkout = 'yes'
-            AND IV.agent = ${agent}
             AND IV.type = ${type}
             AND IV.cancel IS NULL
             GROUP BY IV.created_by
             `
+        } else if (role === 'agent') {
+            result = await prismaClient.$queryRaw`
+           SELECT   US.username, US.percentage,
+            (SUM(IV.price) * US.percentage/100) as percent,
+            SUM(IV.price) as price
+            FROM tbl_invoices IV
+            LEFT JOIN tbl_users AS US
+            ON US.user_id = IV.agent
+            WHERE DATE(IV.created_at) = ${created_at}
+            AND IV.checkout = 'yes'
+            AND IV.agent = ${user_id}
+            AND IV.type = ${type}
+            AND IV.cancel IS NULL
+            GROUP BY IV.created_by
+            `
+        } else {
+            result = await prismaClient.$queryRaw`
+           SELECT   US.username, US.percentage,
+            (SUM(IV.price) * US.percentage/100) as percent,
+            SUM(IV.price) as price
+            FROM tbl_invoices IV
+            LEFT JOIN tbl_users AS US
+            ON US.user_id = IV.agent
+            WHERE DATE(IV.created_at) = ${created_at}
+            AND IV.checkout = 'yes'
+            AND IV.created_by = ${user_id}
+            AND IV.type = ${type}
+            AND IV.cancel IS NULL
+            GROUP BY IV.created_by
+            `
+        }
+
         await prismaClient.$disconnect()
         return result
     } catch (error) {
