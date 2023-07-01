@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkoutController = exports.getInvoiceByBillController = exports.createInvoiceController = exports.getBillController = exports.getAwardController = void 0;
+exports.cancelBillController = exports.checkoutController = exports.getInvoiceByBillController = exports.createInvoiceController = exports.getBillController = exports.getAwardController = void 0;
 const services_1 = require("./services");
 const getAwardController = async (req, res) => {
     let award = await (0, services_1.getAwardService)();
@@ -42,6 +42,7 @@ const createInvoiceController = async (req, res) => {
     const type = req.body.type;
     const group = req.body.group;
     const user_id = req.body.user.user_id;
+    const agent = req.body.user.created_by ? Number(req.body.user.created_by) : null;
     if (group) {
         const groups = await (0, services_1.getLotteryService)(number);
         if (groups) {
@@ -52,6 +53,7 @@ const createInvoiceController = async (req, res) => {
                 bill_id,
                 created_at: new Date(),
                 created_by: user_id,
+                agent,
             }));
             const create = await (0, services_1.createManyService)(lottery);
             if (!create) {
@@ -62,7 +64,7 @@ const createInvoiceController = async (req, res) => {
             }
         }
         else {
-            const create = await (0, services_1.createService)(number, price, bill_id, type, user_id);
+            const create = await (0, services_1.createService)(number, price, bill_id, type, user_id, agent);
             if (!create) {
                 return res.json({
                     status: "error",
@@ -76,7 +78,7 @@ const createInvoiceController = async (req, res) => {
         });
     }
     else {
-        const create = await (0, services_1.createService)(number, price, bill_id, type, user_id);
+        const create = await (0, services_1.createService)(number, price, bill_id, type, user_id, agent);
         if (!create) {
             return res.json({
                 status: "error",
@@ -100,6 +102,7 @@ const getInvoiceByBillController = async (req, res) => {
     }
     const bill = Number(req.params.bill);
     const invoice = await (0, services_1.getInvoiceByBillService)(bill);
+    console.log(invoice);
     return res.json({
         status: "success",
         invoice: invoice ? invoice : [],
@@ -120,3 +123,20 @@ const checkoutController = async (req, res) => {
     });
 };
 exports.checkoutController = checkoutController;
+const cancelBillController = async (req, res) => {
+    const bill_id = Number(req.body.bill_id);
+    const cancel_by = Number(req.body.user.user_id);
+    const cancel_date = new Date();
+    const cancel = await (0, services_1.cancelBillService)(bill_id, cancel_by, cancel_date);
+    if (!cancel) {
+        return res.json({
+            status: "error",
+            message: "ບໍ່ສາມາດຍົກເລີກໃບບິນ",
+        });
+    }
+    return res.json({
+        status: "success",
+        message: "ຍົກເລີກໃບບິນ ສຳເລັດ",
+    });
+};
+exports.cancelBillController = cancelBillController;

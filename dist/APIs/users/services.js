@@ -5,11 +5,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUserService = exports.updateUserService = exports.updateUserAndPasswordService = exports.updateUserLoginService = exports.createUserService = exports.checkUserService = exports.getUsersService = void 0;
 const prismaClient_1 = __importDefault(require("../../prisma/prismaClient"));
-const getUsersService = async () => {
+const getUsersService = async (created_by, role) => {
     try {
-        const users = await prismaClient_1.default.tbl_users.findMany();
-        await prismaClient_1.default.$disconnect();
-        return users;
+        if (role === "admin") {
+            const users = await prismaClient_1.default.tbl_users.findMany();
+            await prismaClient_1.default.$disconnect();
+            return users;
+        }
+        else if (role === "agent") {
+            const users = await prismaClient_1.default.tbl_users.findMany({
+                where: { created_by }
+            });
+            await prismaClient_1.default.$disconnect();
+            return users;
+        }
+        return [];
     }
     catch (error) {
         console.log(error);

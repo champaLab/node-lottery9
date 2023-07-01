@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateResults = exports.validateCheckout = exports.validate = void 0;
+exports.validateResults = exports.validateCancel = exports.validateCheckout = exports.validate = void 0;
 const express_validator_1 = require("express-validator");
 exports.validate = [
     (0, express_validator_1.check)("number")
@@ -20,6 +20,13 @@ exports.validate = [
         .withMessage("ກະລຸນາປ້ອນເລກທີບິນ"),
 ];
 exports.validateCheckout = [
+    (0, express_validator_1.check)("bill_id")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາປ້ອນ ເລກທີບິນ"),
+];
+exports.validateCancel = [
     (0, express_validator_1.check)("bill_id")
         .trim()
         .not()

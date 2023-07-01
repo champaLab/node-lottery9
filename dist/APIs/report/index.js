@@ -7,4 +7,6 @@ const jwt_1 = require("../../utils/jwt");
 const router = (0, express_1.Router)();
 router.post('/summery-of-sale', jwt_1.verify, validates_1.validate, validates_1.validateResults, controllers_1.getLotterySaleController);
 router.post('/report/bills', jwt_1.verify, validates_1.validate, validates_1.validateResults, controllers_1.getLotteryBillController);
+router.post('/report/summary-by-agent', jwt_1.verify, validates_1.validate, validates_1.validateResults, controllers_1.getSummaryByAgentController);
+router.post('/report/summary-award', jwt_1.verify, validates_1.validate, validates_1.validateResults, controllers_1.summaryAwardByAgentController);
 exports.default = router;

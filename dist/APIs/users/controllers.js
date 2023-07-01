@@ -8,7 +8,9 @@ const services_1 = require("./services");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const jwt_1 = require("../../utils/jwt");
 const getUserController = async (req, res) => {
-    let users = await (0, services_1.getUsersService)();
+    const role = req.body.user.role;
+    const created_by = Number(req.body.user.created_by);
+    let users = await (0, services_1.getUsersService)(created_by, role);
     if (!users)
         users = [];
     return res.json({

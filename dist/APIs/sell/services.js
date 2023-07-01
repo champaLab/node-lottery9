@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkoutService = exports.getLotteryService = exports.getInvoiceByBillService = exports.createManyService = exports.createService = exports.getBillService = exports.getAwardService = void 0;
+exports.cancelBillService = exports.checkoutService = exports.getLotteryService = exports.getInvoiceByBillService = exports.createManyService = exports.createService = exports.getBillService = exports.getAwardService = void 0;
 const prismaClient_1 = __importDefault(require("../../prisma/prismaClient"));
 const getAwardService = async () => {
     try {
@@ -29,7 +29,7 @@ const getBillService = async (user_id) => {
     }
 };
 exports.getBillService = getBillService;
-const createService = async (number, price, bill_id, type, user_id) => {
+const createService = async (number, price, bill_id, type, user_id, agent) => {
     try {
         const created_at = new Date();
         const result = await prismaClient_1.default.tbl_invoices.create({
@@ -40,12 +40,9 @@ const createService = async (number, price, bill_id, type, user_id) => {
                 bill_id: Number(bill_id),
                 created_at: new Date(),
                 created_by: Number(user_id),
+                agent,
             }
         });
-        // const result = await prismaClient.$queryRaw`
-        //         INSERT INTO tbl_invoices (number, price, bill_id, created_at, type, created_by)
-        //         VALUES (${number}, ${price}, ${bill_id},  ${new Date()}, ${type}, ${user_id});
-        //         `
         await prismaClient_1.default.$disconnect();
         return result;
     }
@@ -111,3 +108,17 @@ const checkoutService = async (bill_id) => {
     }
 };
 exports.checkoutService = checkoutService;
+const cancelBillService = async (bill_id, cancel_by, cancel_date) => {
+    try {
+        const result = await prismaClient_1.default.$queryRaw `
+        UPDATE tbl_invoices SET cancel = 'yes', cancel_by = ${cancel_by}, cancel_date=${cancel_date}  WHERE bill_id = ${bill_id}
+        `;
+        await prismaClient_1.default.$disconnect();
+        return result;
+    }
+    catch (error) {
+        console.log(error);
+        return null;
+    }
+};
+exports.cancelBillService = cancelBillService;
