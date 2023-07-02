@@ -8,6 +8,18 @@ exports.validate = [
         .not()
         .isEmpty()
         .withMessage("ກະລຸນາເລືອກສິດການໃຊ້ງານ"),
+    (0, express_validator_1.check)("agent")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາເລືອກຕົວແທນ"),
+    (0, express_validator_1.check)("percentage")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາປ້ອນສ່ວນແບ່ງ")
+        .isNumeric()
+        .withMessage("ສ່ວນແບ່ງ ຕ້ອງເປັນຕົວເລກເທົ່ານັ້ນ"),
     (0, express_validator_1.check)("username")
         .trim()
         .not()
@@ -44,16 +56,34 @@ exports.validateUpdate = [
         .not()
         .isEmpty()
         .withMessage("ກະລຸນາປ້ອນ USER ID"),
-    (0, express_validator_1.check)("username")
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນຊື່ຜູ້ໃຊ້ງານ"),
     (0, express_validator_1.check)("role")
         .trim()
         .not()
         .isEmpty()
         .withMessage("ກະລຸນາເລືອກສິດການໃຊ້ງານ"),
+    (0, express_validator_1.check)("agent")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາເລືອກຕົວແທນ"),
+    (0, express_validator_1.check)("percentage")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາປ້ອນສ່ວນແບ່ງ")
+        .isNumeric()
+        .withMessage("ສ່ວນແບ່ງ ຕ້ອງເປັນຕົວເລກເທົ່ານັ້ນ"),
+    (0, express_validator_1.check)("username")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາປ້ອນຊື່ຜູ້ໃຊ້ງານ"),
+    (0, express_validator_1.check)("changePassword")
+        .custom(async (changePassword, { req }) => {
+        if (changePassword && req.body.password_confirm !== req.body.password) {
+            throw new Error('ລະຫັດຜ່ານ ບໍ່ກົງກັນ');
+        }
+    }),
 ];
 async function validateResults(req, res, next) {
     const errors = (0, express_validator_1.validationResult)(req);

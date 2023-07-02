@@ -23,7 +23,7 @@ const sign = (payload) => {
 exports.sign = sign;
 const verify = (req, res, next) => {
     var _a;
-    const headers = req.headers["x-signature"];
+    const headers = req.headers[environment_1.default.JWT_HEADER];
     let token = null;
     if (headers) {
         token = `${headers}`.replace('Bearer ', '');

@@ -7,6 +7,18 @@ export const validate = [
         .not()
         .isEmpty()
         .withMessage("ກະລຸນາເລືອກສິດການໃຊ້ງານ"),
+    check("agent")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາເລືອກຕົວແທນ"),
+    check("percentage")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາປ້ອນສ່ວນແບ່ງ")
+        .isNumeric()
+        .withMessage("ສ່ວນແບ່ງ ຕ້ອງເປັນຕົວເລກເທົ່ານັ້ນ"),
     check("username")
         .trim()
         .not()
@@ -24,7 +36,6 @@ export const validate = [
                 throw new Error('ລະຫັດຜ່ານ ບໍ່ກົງກັນ')
             }
         }),
-
 ];
 export const validateLogin = [
     check("username")
@@ -45,16 +56,34 @@ export const validateUpdate = [
         .not()
         .isEmpty()
         .withMessage("ກະລຸນາປ້ອນ USER ID"),
-    check("username")
-        .trim()
-        .not()
-        .isEmpty()
-        .withMessage("ກະລຸນາປ້ອນຊື່ຜູ້ໃຊ້ງານ"),
     check("role")
         .trim()
         .not()
         .isEmpty()
         .withMessage("ກະລຸນາເລືອກສິດການໃຊ້ງານ"),
+    check("agent")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາເລືອກຕົວແທນ"),
+    check("percentage")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາປ້ອນສ່ວນແບ່ງ")
+        .isNumeric()
+        .withMessage("ສ່ວນແບ່ງ ຕ້ອງເປັນຕົວເລກເທົ່ານັ້ນ"),
+    check("username")
+        .trim()
+        .not()
+        .isEmpty()
+        .withMessage("ກະລຸນາປ້ອນຊື່ຜູ້ໃຊ້ງານ"),
+    check("changePassword")
+        .custom(async (changePassword: string, { req }) => {
+            if (changePassword && req.body.password_confirm !== req.body.password) {
+                throw new Error('ລະຫັດຜ່ານ ບໍ່ກົງກັນ')
+            }
+        }),
 ];
 
 export async function validateResults(

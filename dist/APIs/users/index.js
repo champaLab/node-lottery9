@@ -11,4 +11,5 @@ router.post('/users/update', jwt_1.verify, validates_1.validateUpdate, validates
 router.delete('/users/delete/:id', jwt_1.verify, controllers_1.updateUserController);
 router.post('/login', validates_1.validateLogin, validates_1.validateResults, controllers_1.loginController);
 router.get('/me', jwt_1.verify, controllers_1.getMeController);
+router.post('/users/toggle-status', jwt_1.verify, controllers_1.toggleUserController);
 exports.default = router;

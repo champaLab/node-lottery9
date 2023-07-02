@@ -13,6 +13,7 @@ model tbl_users {
   password   String    @db.VarChar(300)
   username   String    @unique(map: "username") @db.VarChar(255)
   status     Boolean   @default(true)
+  token      String?   @db.Text
   percentage Int       @default(0)
   last_login DateTime? @db.DateTime(0)
   created_by Int?

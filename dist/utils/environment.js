@@ -12,4 +12,5 @@ exports.default = {
     PUBLIC_KEY: process.env.PUBLIC_KEY,
     DOMAIN_IMAGE: process.env.DOMAIN_IMAGE,
     METRICS_PORT: parseInt(`${process.env.METRICS_PORT}`) || 8800,
+    JWT_HEADER: process.env.JWT_HEADER || 'authorization',
 };

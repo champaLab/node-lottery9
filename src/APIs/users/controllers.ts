@@ -1,11 +1,12 @@
 import { Request, Response } from "express"
-import { checkUserService, createUserService, deleteUserService, getUsersService, updateUserAndPasswordService, updateUserLoginService, updateUserService } from "./services";
+import { checkTokenService, checkUserService, createUserService, deleteUserService, getUsersService, toggleUserUserService, updateUserAndPasswordService, updateUserLoginService, updateUserService } from "./services";
 import bcrypt from 'bcryptjs'
 import { sign } from "../../utils/jwt";
+import environment from "../../utils/environment";
 
 export const getUserController = async (req: Request, res: Response) => {
 
-    const role = req.body.user.role
+    const role = `${req.body.user.role}`.toLocaleLowerCase()
     const created_by = Number(req.body.user.created_by)
 
     let users = await getUsersService(created_by, role)
@@ -22,9 +23,9 @@ export const createUserController = async (req: Request, res: Response) => {
 
     const username = req.body.username;
     const password = req.body.password;
-    const created_by = req.body.user.user_id
+    const created_by = Number(req.body.agent)
     const role = req.body.role
-    const percentage = req.body.percentage
+    const percentage = Number(req.body.percentage)
 
     const check = await checkUserService(username)
     if (check) {
@@ -77,11 +78,13 @@ export const loginController = async (req: Request, res: Response) => {
         })
     }
     const last_login = new Date()
+    console.log({ check })
 
-    const userLatest = await updateUserLoginService(check.user_id, last_login)
-    const _user = { ...userLatest, password: null }
-
+    const _user = { ...check, password: null }
     const token = await sign(_user)
+
+    await updateUserLoginService(check.user_id, last_login, token)
+
     return res.json({
         status: "success",
         token: token,
@@ -93,41 +96,23 @@ export const loginController = async (req: Request, res: Response) => {
 }
 
 export const updateUserController = async (req: Request, res: Response) => {
-    const telephone = req.body.telephone;
-    const whatsapp = req.body.whatsapp;
-    const password = `${req.body.password}`.trim();
-    const change_password = req.body.change_password;
-    const password_confirm = req.body.password_confirm;
-    const address = req.body.address;
-    const full_name = req.body.full_name;
-    const last_login = new Date()
-    const status = true
-    const user_id = req.body.user_id
+    const password = req.body.password
+    const agent = Number(req.body.agent)
+    const role = req.body.role
+    const percentage = Number(req.body.percentage)
+    const user_id = Number(req.body.user_id)
+    const changePassword = req.body.changePassword
 
-    const check = await checkUserService(whatsapp)
-    if (check && check.user_id != user_id) {
+    const hash = await bcrypt.hashSync(password, 10)
+
+    const user = await updateUserService(user_id, hash, agent, percentage, role, changePassword)
+    if (!user) {
         return res.json({
             status: "error",
-            message: "ໝາຍເລກ Whatsapp ມີໃນລະບົບແລ້ວ",
+            message: "ບັນທຶກຂໍ້ມູນການແກ້ໄຂ ຜິດພາດ",
         })
     }
 
-    if (change_password && password.length >= 8 && (password != password_confirm)) {
-        return res.json({
-            status: "error",
-            message: "ລະຫັດຜ່ານບໍ່ກົງກັນ",
-        })
-    } else if (change_password && password.length >= 8 && (password == password_confirm)) {
-        const hash = await bcrypt.hashSync(password, 10)
-        await updateUserAndPasswordService({ ...req.body, password: hash })
-        return res.json({
-            status: "success",
-            message: "ແກ້ໄຂຂໍ້ມູນສຳເລັດແລ້ວ",
-        })
-    }
-
-
-    await updateUserService({ telephone, whatsapp, address, full_name, status, user_id })
     return res.json({
         status: "success",
         message: "ແກ້ໄຂຂໍ້ມູນສຳເລັດແລ້ວ",
@@ -151,9 +136,45 @@ export const deleteUserController = async (req: Request, res: Response) => {
         message: "ບໍ່ພົບຂໍ້ມູນຜູ້ໃຊ້ງານ",
     })
 }
+export const toggleUserController = async (req: Request, res: Response) => {
+    const user_id = Number(req.body.user_id)
+    const status = req.body.status
+    const role = `${req.body.role}`.toLocaleLowerCase()
+
+    if (typeof user_id == "number") {
+        await toggleUserUserService(user_id, status, role)
+        return res.json({
+            status: "success",
+            message: "ປິດບັນຊີຜູ້ ໃຊ້ງານ ສຳເລັດແລ້ວ",
+        })
+    }
+
+    return res.json({
+        status: "error",
+        message: "ບໍ່ພົບຂໍ້ມູນຜູ້ໃຊ້ງານ",
+    })
+}
 
 export const getMeController = async (req: Request, res: Response) => {
-    console.log(req.body.user)
+
+    const header = req.headers[environment.JWT_HEADER]
+    const user_id = Number(req.body.user.user_id)
+    if (!header) {
+        return res.json({
+            status: "error",
+            user: 'Token unauthorized',
+        })
+    }
+
+    const token = `${header}`.split(' ')[1]
+    const user = await checkTokenService(user_id, token)
+    if (!user || (user && !user.status)) {
+        return res.json({
+            status: "error",
+            message: "Invalid"
+        })
+    }
+
     return res.json({
         status: "success",
         user: req.body.user,

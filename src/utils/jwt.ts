@@ -24,7 +24,7 @@ export const sign = (payload: any) => {
 }
 
 export const verify = (req: Request, res: Response, next: NextFunction) => {
-    const headers = req.headers["x-signature"]
+    const headers = req.headers[environment.JWT_HEADER]
     let token = null
     if (headers) {
         token = `${headers}`.replace('Bearer ', '')
